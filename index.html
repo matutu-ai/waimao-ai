@@ -1,0 +1,349 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>外贸AI获客系统 · 完整版原型</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f4f6fb;color:#1f2937}
+header{background:linear-gradient(90deg,#1e40af,#2563eb);color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+header h1{font-size:18px;margin:0}header small{opacity:.8}
+nav{display:flex;gap:4px;background:#fff;padding:0 16px;border-bottom:1px solid #e5e7eb;overflow-x:auto}
+nav button{border:0;background:none;padding:14px 16px;font-size:14px;cursor:pointer;color:#4b5563;border-bottom:3px solid transparent;white-space:nowrap}
+nav button.on{color:#1d4ed8;border-color:#2563eb;font-weight:600}
+main{max-width:1200px;margin:20px auto;padding:0 16px}
+.tab{display:none}.tab.on{display:block}
+.card{background:#fff;border-radius:12px;padding:18px 20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.card h2{font-size:16px;margin:0 0 12px}.card h3{font-size:14px;margin:8px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+label{font-size:13px;color:#374151;display:block}label .req{color:#dc2626}
+input,select,textarea{width:100%;margin-top:4px;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:inherit}
+textarea{min-height:70px;resize:vertical}input.miss,select.miss,textarea.miss{border-color:#f87171;background:#fef2f2}
+input.ai,textarea.ai,select.ai{background:#eff6ff;border-color:#93c5fd}
+.btn{background:#2563eb;color:#fff;border:0;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13px}
+.btn.g{background:#fff;color:#2563eb;border:1px solid #2563eb}.btn.r{background:#ef4444}.btn.s{padding:4px 10px;font-size:12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.demo{display:inline-block;background:#fef3c7;color:#92400e;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:6px;font-weight:normal}
+.layout{display:grid;grid-template-columns:1fr 340px;gap:16px}@media(max-width:900px){.layout{grid-template-columns:1fr}}
+.side{position:sticky;top:12px;align-self:start}
+.prod{border:1px dashed #cbd5e1;border-radius:10px;padding:12px;margin-bottom:10px;position:relative}
+.prod .del{position:absolute;right:10px;top:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:8px;border-bottom:1px solid #eef0f4;text-align:left;vertical-align:top}th{background:#f9fafb}
+.sc{font-weight:700;padding:2px 10px;border-radius:10px}.A{background:#dcfce7;color:#166534}.B{background:#fef9c3;color:#854d0e}.C{background:#fee2e2;color:#991b1b}
+.persona{border:1px solid #e5e7eb;border-radius:10px;padding:12px}.persona [contenteditable]{outline:none;border-bottom:1px dashed #cbd5e1}
+.tag{display:inline-block;background:#eef2ff;color:#3730a3;font-size:12px;padding:2px 8px;border-radius:8px;margin:2px}
+.mail{border:1px solid #e5e7eb;border-radius:10px;padding:12px;margin-bottom:10px}.mail pre{white-space:pre-wrap;font-family:inherit;font-size:13px;margin:8px 0 0}
+.kb{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}@media(max-width:900px){.kb{grid-template-columns:1fr 1fr}}
+.col{background:#eef1f6;border-radius:10px;padding:10px;min-height:300px}.col h4{margin:0 0 8px;font-size:13px}
+.it{background:#fff;border-radius:8px;padding:8px;margin-bottom:8px;font-size:12px;cursor:grab;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.miss-list li{color:#b91c1c;font-size:13px}.ok{color:#15803d;font-size:13px}
+iframe{width:100%;height:640px;border:1px solid #e5e7eb;border-radius:10px;background:#fff}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;display:none;z-index:9}
+.steps{display:flex;max-width:1200px;margin:14px auto 0;padding:0 16px;gap:6px}.step{flex:1;background:#fff;border-radius:10px;padding:8px;text-align:center;font-size:12px;color:#6b7280;cursor:pointer;border:2px solid transparent}.step.done{color:#15803d;background:#f0fdf4}.step.cur{border-color:#2563eb;color:#1d4ed8;font-weight:600}
+.nextbar{max-width:1200px;margin:0 auto 30px;padding:0 16px;display:flex;justify-content:space-between}
+.kpi{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}.kpi div{background:#fff;border-radius:12px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}.kpi b{display:block;font-size:26px;color:#1d4ed8}.kpi span{font-size:12px;color:#6b7280}
+.bar{display:flex;align-items:center;gap:8px;font-size:13px;margin:6px 0}.bar i{display:block;height:18px;background:#3b82f6;border-radius:4px;min-width:2px}.bar em{width:90px;font-style:normal;color:#374151}
+.exh{font-size:11px;color:#9ca3af;margin-top:3px}.stab{border:0;background:#eef2ff;color:#3730a3;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:13px}.stab.on{background:#2563eb;color:#fff}code{font-size:12px;background:#f3f4f6;padding:1px 4px;border-radius:4px}
+.nc{display:inline-block;background:#f3f4f6;color:#6b7280;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:6px}
+header select{width:auto;margin:0;padding:5px 8px;border-radius:6px;border:0}
+</style></head><body>
+<header><div><h1>🌍 外贸AI自动获客系统 <small>完整版原型 · 多公司模版</small></h1></div><div class="row"><span style="font-size:13px">🏢 工作区</span><select id="wsSel" onchange="wsSwitch(this.value)"></select><button class="btn g s" onclick="wsNew()">+ 新建公司</button><button class="btn r s" onclick="wsDel()">删除</button><span id="curCo" style="font-size:12px;opacity:.85"></span></div></header>
+<nav id="nav"></nav><div class="steps" id="steps"></div>
+<main>
+<!-- 0 -->
+<section class="tab" id="t0"><div class="layout"><div>
+<div id="formBox"></div>
+<div class="row"><button class="btn" onclick="saveProfile()">💾 保存公司档案</button><button class="btn g" onclick="loadDemo()">载入示例公司</button><button class="btn g" onclick="exportJSON()">导出 JSON</button><label class="btn g" style="display:inline-block">导入 JSON<input type="file" accept=".json" style="display:none" onchange="importJSON(this)"></label><button class="btn r" onclick="clearProfile()">清空</button></div>
+</div>
+<div class="side"><div class="card"><h2>🤖 AI 智能填写 <span class="demo">演示 · 规则提取</span></h2>
+<p style="font-size:12px;color:#6b7280">粘贴官网链接、公司介绍或产品目录文字，AI 自动拆解成字段（蓝色底=AI填写）。正式版此处接入大模型 + 网页抓取 / PDF 解析。</p>
+<textarea id="aiIn" style="min-height:160px" placeholder="例：Ningbo Sunrise Lighting Co., Ltd. 宁波日升照明有限公司，成立于2010年，工厂，员工200人，厂房15000平方米，主营LED面板灯、LED工矿灯，通过CE、RoHS、UL认证，MOQ 500 pcs，交期25天，出口欧洲、北美... www.example.com"></textarea>
+<div class="row" style="margin-top:8px"><button class="btn" onclick="aiExtract()">✨ 智能提取</button><button class="btn g s" onclick="aiSample()">填入示例文本</button></div>
+<div id="aiOut" style="margin-top:10px"></div>
+<h3>必填项检查</h3><div id="missBox"></div></div></div>
+</div></section>
+<!-- 1 -->
+<section class="tab" id="t1"><div class="card"><h2>🎯 客户画像 <span class="demo">演示 · 模版推断</span></h2>
+<p style="font-size:12px;color:#6b7280">根据公司档案的产品、目标市场、客户类型推断 3-5 个画像。文字可直接点击编辑。正式版由大模型生成。</p>
+<button class="btn" onclick="genPersonas()">✨ 根据档案生成画像</button></div><div class="grid" id="personaBox"></div></section>
+<!-- 2 -->
+<section class="tab" id="t2"><div class="card"><h2>📋 线索库 & 筛选 <span class="demo">示例数据</span></h2>
+<p style="font-size:12px;color:#6b7280">以下为虚构示例线索。正式版接入海关数据 / Google Maps / LinkedIn / Apollo 等。打分=与画像国家、类型、关键词匹配度（演示算法）。</p>
+<div class="row"><button class="btn" onclick="genLeads()">🔍 按画像生成示例线索</button><button class="btn g" onclick="scoreLeads()">重新打分</button>
+<select id="fScore" style="width:120px" onchange="renderLeads()"><option value="">全部评分</option><option>A</option><option>B</option><option>C</option></select></div></div>
+<div class="card"><table><thead><tr><th>公司</th><th>国家</th><th>类型</th><th>业务/进口记录</th><th>决策人</th><th>匹配画像</th><th>评分</th><th>状态</th><th></th></tr></thead><tbody id="leadBody"></tbody></table></div></section>
+<!-- 3 -->
+<section class="tab" id="t3"><div class="card"><h2>✉️ 开发信 & 跟进序列 <span class="demo">演示 · 模版生成</span></h2>
+<div class="row"><label style="flex:1">选择线索<select id="mailLead"></select></label><label style="width:200px">开发策略<select id="mailStrat"><option value="auto">🤖 自动识别（按客户类型）</option></select></label><button class="btn" onclick="genMails()" style="margin-top:18px">✨ 生成 4 封邮件</button><button class="btn g" onclick="genBatch()" style="margin-top:18px">⚡ 批量生成（全部 A/B 线索）</button></div><div id="stratInfo" style="margin-top:10px"></div><details style="margin-top:8px"><summary style="font-size:13px;cursor:pointer">📚 查看各客户类型开发策略库</summary><div id="stratLib" class="grid" style="margin-top:8px"></div></details>
+<p style="font-size:12px;color:#6b7280">首封 + 第3/7/14天跟进，英文。正式版由大模型结合客户官网情报个性化改写；开启人工审核时需确认后发送。</p></div><div id="mailBox"></div></section>
+<!-- 4 -->
+<section class="tab" id="t4"><div class="card"><h2>📥 询盘管理</h2><div class="row"><input id="inqName" placeholder="例：BrightPath Supply LLC" style="width:200px"><input id="inqNote" placeholder="例：询 600x600 面板灯 2000pcs，FOB 宁波" style="width:300px"><button class="btn" onclick="addInq()">+ 新增询盘</button><span style="font-size:12px;color:#6b7280">拖动卡片切换阶段；线索库“转询盘”、独立站表单也会进这里</span></div></div><div class="card"><h2>📬 邮件回复自动识别 <span class="demo">演示 · 模拟收件</span></h2><div class="row"><button class="btn" onclick="simReply()">📨 模拟收取回复</button><label style="display:inline-flex;align-items:center;gap:6px;width:auto"><input type="checkbox" id="autoPoll" style="width:auto;margin:0" onchange="togglePoll()"> 自动轮询收件箱（演示，每 6 秒）</label><span style="font-size:12px;color:#6b7280">正式版通过 IMAP/邮箱 API 拉取回复，由大模型识别意图；有兴趣/要报价/要样品自动建询盘卡片</span></div><div id="replyLog" style="margin-top:10px;max-height:220px;overflow:auto"></div></div><div class="kb" id="kb"></div></section>
+<!-- 5 -->
+<section class="tab" id="t5"><div class="card"><h2>🌐 独立站生成 <span class="demo">演示 · 模版渲染</span></h2>
+<div class="row"><select id="siteColor" style="width:140px"><option value="#1e40af">商务蓝</option><option value="#047857">工业绿</option><option value="#b45309">暖橙</option><option value="#111827">极简黑</option></select><button class="btn" onclick="genSite()">✨ 一键生成网站</button><button class="btn g" onclick="dlSite()">⬇ 下载 HTML</button></div>
+<p style="font-size:12px;color:#6b7280">从公司档案生成：首页 / 产品 / 关于我们 / 认证 / 询盘表单。正式版支持多语言、SEO 文案由大模型撰写、绑定域名发布。</p></div><div class="card"><div class="row"><button class="stab on" onclick="seoTab(0)">🖥 网站预览</button><button class="stab" onclick="seoTab(1)">🔑 关键词研究</button><button class="stab" onclick="seoTab(2)">🧩 On-page 自动优化</button><button class="stab" onclick="seoTab(3)">🩺 SEO 体检</button><button class="stab" onclick="seoTab(4)">📝 内容计划</button><button class="stab" onclick="seoTab(5)">📈 排名追踪 & 收录</button></div><p style="font-size:12px;color:#6b7280;margin:8px 0 0">🔎 谷歌自动 SEO 优化 <span class="demo">演示 · 规则生成</span> 正式版：关键词数据接 Google Keyword Planner / SEMrush API，排名与收录接 Google Search Console，文章由大模型撰写。</p></div>
+<div class="spane"><iframe id="siteFrame"></iframe></div>
+<div class="spane card" style="display:none"><div class="row"><button class="btn" onclick="genKW()">✨ 生成关键词</button><span style="font-size:12px;color:#6b7280">基于产品、认证、目标国家生成核心词 / 长尾词 / 问题词。优先级为规则估算；<b>不展示搜索量</b>，接入 Keyword Planner 后显示真实数据。</span></div><div id="kwBox" style="margin-top:10px"></div></div>
+<div class="spane card" style="display:none"><div class="row"><button class="btn" onclick="fixAll();renderOnpage()">🛠 一键应用全部优化</button><button class="btn g" onclick="SEO.fix.sitemap=1;saveSEO();dl('sitemap.xml',sitemap(),'application/xml')">⬇ sitemap.xml</button><button class="btn g" onclick="SEO.fix.robots=1;saveSEO();dl('robots.txt',robots(),'text/plain')">⬇ robots.txt</button></div><div id="onBox" style="margin-top:10px"></div><p style="font-size:12px;color:#6b7280">包含：每页 Title / Meta / H1-H3、URL slug、图片 Alt、内部链接、hreflang、canonical、Open Graph、Schema.org JSON-LD（Organization、Product、FAQPage、BreadcrumbList）。</p></div>
+<div class="spane card" style="display:none" id="auditBox"></div>
+<div class="spane card" style="display:none"><div class="row"><button class="btn" onclick="genPlan()">✨ 生成内容计划</button><span style="font-size:12px;color:#6b7280">按关键词词簇生成博客选题 + 大纲，每周 2 篇；「生成并发布」会把文章插入网站博客区（演示模版）。</span></div><div id="planBox" style="margin-top:10px"></div></div>
+<div class="spane card" style="display:none" id="rankBox"></div></section>
+<section class="tab" id="t6"><div class="card"><h2>📊 数据看板 / 效果统计 <span class="demo">基于本工作区数据</span></h2><div class="kpi" id="kpi"></div></div><div class="grid" id="dash"></div></section>
+<section class="tab" id="t7"><div class="card"><h2>⚙️ 设置 <span class="nc">均未接入 · 仅保存占位</span></h2><p style="font-size:12px;color:#6b7280">以下配置仅保存在本浏览器，原型不会调用任何外部服务。正式版需后端加密保存密钥。</p><div id="setBox"></div><button class="btn" onclick="saveSet()">💾 保存设置</button></div>
+<div class="card"><h2>数据管理</h2><div class="row"><button class="btn g" onclick="exportAll()">导出全部工作区</button><button class="btn r" onclick="if(confirm('清除所有本地数据？')){Object.keys(localStorage).filter(k=>k.startsWith('wm_')).forEach(k=>localStorage.removeItem(k));location.reload()}">清除全部数据</button></div></div></section>
+</main><div class="nextbar" id="nextbar"></div><div class="toast" id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const TABS=['① 公司资料','② 客户画像','③ 线索筛选','④ 开发信','⑤ 询盘管理','⑥ 独立站','📊 数据看板','⚙️ 设置'];let CUR=0;
+const toast=m=>{const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',1800)};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const G=k=>{try{return JSON.parse(localStorage.getItem('wm_'+k))}catch(e){return null}},GS=(k,v)=>localStorage.setItem('wm_'+k,JSON.stringify(v));
+let WS=G('ws')||{cur:'demo',list:[{id:'demo',name:'宁波日升照明（示例）'}]};GS('ws',WS);
+const LS=k=>G(WS.cur+'_'+k),SS=(k,v)=>GS(WS.cur+'_'+k,v);
+// ---- schema: [key,label,req,type,opts]
+const SECTIONS=[
+['一、公司信息',[['nameCn','公司名称（中文）',1],['nameEn','公司名称（英文）',1],['website','官网'],['founded','成立年份'],['identity','身份',1,'select',['工厂','贸易商','工贸一体']],['location','所在地'],['staff','员工人数 / 厂房面积'],['capacity','年产能'],['exportInfo','出口占比 / 主要出口国']]],
+['三、实力背书',[['certs','认证（CE/FDA/ISO/RoHS…）'],['patents','专利 / 检测报告'],['cases','合作品牌 / 客户案例','','textarea'],['fairs','参加过的展会'],['adv1','核心优势 1',1],['adv2','核心优势 2'],['adv3','核心优势 3']]],
+['四、目标市场',[['markets','主攻国家/地区（逗号分隔）',1],['custTypes','目标客户类型',1,'multi',['进口商','批发商','品牌方','零售商','工程商','电商卖家']],['exclude','排除的市场/客户'],['competitors','竞争对手']]],
+['五、开发设置',[['sender','发信人姓名',1],['title','职位',1],['email','发信邮箱',1],['signature','邮件签名',1,'textarea'],['lang','语言偏好','','select',['English','English + 西班牙语','English + 德语','English + 法语','English + 俄语','English + 阿拉伯语']],['tone','语气风格','','select',['专业正式','简洁直接','热情友好']],['dailyLimit','每日发送上限'],['review','人工审核后再发','','select',['开启','关闭']]]]];
+const PFIELDS=[['pname','产品名称',1],['pcat','类别'],['pspec','型号 / 核心参数','','textarea'],['hs','HS 编码'],['price','价格区间（FOB/EXW）'],['moq','MOQ 起订量',1],['sample','样品政策'],['lead','交期',1],['customize','可定制项（OEM/ODM/Logo/包装）'],['img','产品图 / 目录链接']];
+const DEMO={nameCn:'宁波日升照明有限公司',nameEn:'Ningbo Sunrise Lighting Co., Ltd.',website:'www.sunrise-led-demo.com',founded:'2010',identity:'工厂',location:'浙江宁波',staff:'200 人 / 15,000 ㎡',capacity:'120 万套/年',exportInfo:'出口占比 85%，主要出口德国、美国、英国、澳大利亚',
+certs:'CE, RoHS, UL, DLC, ISO9001',patents:'12 项外观/实用新型专利；TÜV 检测报告',cases:'为欧洲某连锁建材超市长期供货；美国照明品牌 OEM 合作 6 年',fairs:'广交会、法兰克福照明展 Light+Building、香港秋灯展',adv1:'自有 SMT 与老化车间，品质可控，不良率 <0.3%',adv2:'5 年质保，UL/DLC 认证齐全，可直接进入北美工程项目',adv3:'支持小批量 OEM，MOQ 500 起，打样 7 天',
+markets:'Germany, USA, UK, Australia, Poland',custTypes:['进口商','批发商','工程商','品牌方'],exclude:'暂不做非洲小额零售',competitors:'Opple, Philips OEM 代工厂',
+sender:'Tina Wang',title:'Overseas Sales Manager',email:'tina@sunrise-led-demo.com',signature:'Tina Wang | Overseas Sales Manager\nNingbo Sunrise Lighting Co., Ltd.\nWhatsApp: +86 138 0000 0000\nwww.sunrise-led-demo.com',lang:'English',tone:'专业正式',dailyLimit:'50',review:'开启',
+products:[{pname:'LED Panel Light',pcat:'室内照明',pspec:'600x600mm, 36W/40W, 120lm/W, CRI>80, 3000-6500K',hs:'9405.11',price:'FOB $6.5 - $9.8',moq:'500 pcs',sample:'样品 3 天发出，费用大货返还',lead:'25 天',customize:'Logo、包装、色温、驱动',img:''},
+{pname:'LED High Bay Light',pcat:'工业照明',pspec:'UFO 100W-240W, 150lm/W, IP65, 1-10V 调光',hs:'9405.42',price:'FOB $18 - $42',moq:'200 pcs',sample:'免费样品，客户付运费',lead:'30 天',customize:'OEM/ODM、外壳颜色、传感器',img:''}]};
+let P=LS('profile')||(WS.cur==='demo'?JSON.parse(JSON.stringify(DEMO)):{nameCn:(WS.list.find(w=>w.id===WS.cur)||{}).name||'',products:[{}]}),personas=LS('personas')||[],leads=LS('leads')||[],inqs=LS('inqs')||null,aiSet=new Set();
+// ---- render form
+function fieldHTML(f,val,prefix=''){const[k,l,r,t,o]=f,id=prefix+k,ex=exStr(k),ph=ex?` placeholder="例：${esc(ex)}"`:'',hint=ex&&(t==='textarea'||ex.length>22)?`<div class="exh">示例：${esc(String(EX[k]).replace(/\n/g,' / '))}</div>`:'',lab=`<label>${esc(l)}${r?' <span class="req">★</span>':''}`;
+ if(t==='select')return lab+`<select data-k="${k}" id="${id}"><option value="">请选择（例：${esc(o[0])}）</option>${o.map(x=>`<option ${x===val?'selected':''}>${x}</option>`).join('')}</select></label>`;
+ if(t==='multi')return lab+`<div style="margin-top:6px">${o.map(x=>`<label style="display:inline-block;margin-right:10px"><input type="checkbox" style="width:auto" data-multi="${k}" value="${x}" ${(val||[]).includes(x)?'checked':''}> ${x}</label>`).join('')}</div><div class="exh">示例：进口商、批发商、工程商</div></label>`;
+ if(t==='textarea')return lab+`<textarea data-k="${k}" id="${id}"${ph}>${esc(val)}</textarea>${hint}</label>`;
+ return lab+`<input data-k="${k}" id="${id}" value="${esc(val)}"${ph}>${hint}</label>`}
+function renderForm(){let h='';SECTIONS.forEach((s,i)=>{h+=`<div class="card"><h2>${s[0]} <button class="btn g s" onclick="fillSecEx(${i})">填入示例</button></h2><div class="grid">${s[1].map(f=>`<div ${f[3]==='textarea'||f[3]==='multi'?'style="grid-column:1/-1"':''}>${fieldHTML(f,P[f[0]])}</div>`).join('')}</div></div>`;
+ if(i===0)h+=`<div class="card"><h2>二、产品信息 <button class="btn g s" onclick="addProd()">+ 添加产品</button> <button class="btn g s" onclick="fillSecEx('p')">填入示例</button></h2><div id="prodBox">${(P.products||[]).map((p,j)=>`<div class="prod" data-i="${j}"><button class="btn r s del" onclick="delProd(${j})">删除</button><h3>产品 ${j+1}</h3><div class="grid">${PFIELDS.map(f=>`<div ${f[3]==='textarea'?'style="grid-column:1/-1"':''}>${fieldHTML(f,p[f[0]],'p'+j+'_')}</div>`).join('')}</div></div>`).join('')}</div></div>`});
+ $('#formBox').innerHTML=h;$$('#formBox [data-k]').forEach(e=>{if(aiSet.has(e.id))e.classList.add('ai');e.oninput=()=>{e.classList.remove('ai');collect();checkMissing()}});$$('[data-multi]').forEach(e=>e.onchange=()=>{collect();checkMissing()});checkMissing();$('#curCo').textContent='当前档案：'+(P.nameCn||'未命名')}
+function collect(){SECTIONS.forEach(s=>s[1].forEach(f=>{if(f[3]==='multi')P[f[0]]=$$(`[data-multi="${f[0]}"]:checked`).map(e=>e.value);else{const e=document.getElementById(f[0]);if(e)P[f[0]]=e.value}}));
+ P.products=$$('.prod').map(d=>{const o={},j=d.dataset.i;PFIELDS.forEach(f=>o[f[0]]=document.getElementById('p'+j+'_'+f[0]).value);return o})}
+function addProd(){collect();P.products.push({});renderForm()}function delProd(j){collect();P.products.splice(j,1);renderForm()}
+function checkMissing(){const m=[];$$('.miss').forEach(e=>e.classList.remove('miss'));
+ SECTIONS.forEach(s=>s[1].forEach(f=>{if(!f[2])return;const v=P[f[0]];if(!v||(Array.isArray(v)&&!v.length)){m.push(s[0].slice(2)+' · '+f[1]);const e=document.getElementById(f[0]);e&&e.classList.add('miss')}}));
+ if(!(P.products||[]).length)m.push('产品信息 · 至少 1 个产品');
+ (P.products||[]).forEach((p,j)=>PFIELDS.forEach(f=>{if(f[2]&&!p[f[0]]){m.push(`产品${j+1} · ${f[1]}`);const e=document.getElementById('p'+j+'_'+f[0]);e&&e.classList.add('miss')}}));
+ $('#missBox').innerHTML=m.length?`<ul class="miss-list">${m.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul><p style="font-size:12px;color:#6b7280">🤖 正式版：AI 会以对话方式逐条追问以上缺项</p>`:'<p class="ok">✅ 必填项已完整</p>';return m}
+function saveProfile(){collect();P._v=(P._v||0)+1;P._saved=new Date().toLocaleString();SS('profile',P);const w=WS.list.find(w=>w.id===WS.cur);if(w&&P.nameCn){w.name=P.nameCn;GS('ws',WS);renderWS()}const h=LS('history')||[];h.unshift({v:P._v,t:P._saved});SS('history',h.slice(0,20));toast('已保存（版本 v'+P._v+'）');$('#curCo').textContent='当前档案：'+(P.nameCn||'未命名')+' · v'+P._v}
+function loadDemo(){P=JSON.parse(JSON.stringify(DEMO));aiSet.clear();renderForm();toast('已载入示例公司')}
+function clearProfile(){if(!confirm('清空当前档案？'))return;P={products:[{}]};aiSet.clear();renderForm()}
+function exportJSON(){collect();dl('company-profile.json',JSON.stringify(P,null,2),'application/json')}
+function importJSON(inp){const r=new FileReader();r.onload=()=>{try{P=JSON.parse(r.result);renderForm();toast('导入成功')}catch(e){alert('JSON 格式错误')}};r.readAsText(inp.files[0])}
+function dl(n,c,t){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;a.click()}
+// ---- AI extractor (demo heuristic)
+function aiSample(){$('#aiIn').value='Shenzhen Brightway Electronics Co., Ltd. 深圳明道电子有限公司 成立于2012年，是一家工贸一体企业，位于广东深圳，员工150人，厂房8000平方米，年产能 300万件。主营产品：蓝牙耳机、充电宝。通过CE、FCC、RoHS认证，MOQ 1000 pcs，交期20天，价格 FOB $3.5-$8。支持OEM/ODM、Logo定制。出口占比70%，主要出口美国、德国、巴西。参加过广交会、香港电子展。官网 www.brightway-demo.com 联系人 Jack Li，邮箱 jack@brightway-demo.com'}
+function aiExtract(){collect();const t=$('#aiIn').value;if(!t.trim())return toast('请先粘贴内容');const got={},pr={};const m=(re,i=1)=>{const r=t.match(re);return r?r[i].trim():''};
+ got.website=m(/((?:https?:\/\/)?(?:www\.)?[a-z0-9-]+\.(?:com|cn|net|org|co)[^\s，,]*)/i);
+ if(/^https?:\/\/|^www\./i.test(t.trim())&&t.trim().split(/\s+/).length===1){$('#aiOut').innerHTML='<p style="font-size:12px;color:#92400e">⚠ 演示版无法抓取网页。正式版会抓取该官网首页/产品页/关于我们再提取。已填入官网字段。</p>';setF({website:got.website},{});return}
+ got.nameEn=m(/([A-Z][A-Za-z&.\s]+(?:Co\.,?\s*Ltd\.?|Inc\.?|LLC|Limited|Corp\.?))/);got.nameCn=m(/([\u4e00-\u9fa5]{2,20}(?:有限公司|集团|公司))/);
+ got.founded=m(/(?:成立于|founded in|since|established in)\s*(\d{4})/i);
+ got.identity=/工贸一体|manufacturer and trad/i.test(t)?'工贸一体':/工厂|factory|manufacturer/i.test(t)?'工厂':/贸易|trading/i.test(t)?'贸易商':'';
+ got.location=m(/(?:位于|located in)\s*([\u4e00-\u9fa5A-Za-z\s]{2,12}?)(?:[，,。]|$)/i);
+ const st=m(/(\d+)\s*(?:人|employees|staff)/i),ar=m(/([\d,]+)\s*(?:平方米|㎡|sqm|square meters)/i);if(st||ar)got.staff=[st&&st+' 人',ar&&ar+' ㎡'].filter(Boolean).join(' / ');
+ got.capacity=m(/年产能\s*[:：]?\s*([^，,。]+)/);
+ const ex=m(/(出口占比\s*\d+%[^。]*)/);if(ex)got.exportInfo=ex;
+ const certs=(t.match(/\b(CE|FCC|RoHS|UL|DLC|ISO\s?9001|ISO|FDA|SAA|GS|ETL|REACH|BSCI)\b/g)||[]);if(certs.length)got.certs=[...new Set(certs)].join(', ');
+ const fr=m(/参加过([^。]+)/);if(fr)got.fairs=fr.replace(/[等。]$/,'');
+ const mk=m(/主要出口([^。]+)/);if(mk)got.markets=mk.replace(/、/g,', ');
+ got.sender=m(/联系人\s*[:：]?\s*([A-Za-z\u4e00-\u9fa5\s]{2,20}?)(?:[，,]|邮箱|$)/);got.email=m(/([\w.+-]+@[\w-]+\.[\w.]+)/);
+ pr.pname=m(/主营(?:产品)?\s*[:：]?\s*([^。]+)/);pr.moq=m(/MOQ\s*[:：]?\s*([\d,]+\s*\w*)/i);pr.lead=m(/交期\s*[:：]?\s*(\d+\s*天)/);pr.price=m(/((?:FOB|EXW)\s*\$?[\d.\-~\s$]+)/i);
+ const cu=[];if(/OEM/i.test(t))cu.push('OEM');if(/ODM/i.test(t))cu.push('ODM');if(/Logo/i.test(t))cu.push('Logo');if(/包装|packag/i.test(t))cu.push('包装');if(cu.length)pr.customize=cu.join(' / ');
+ setF(got,pr)}
+function setF(got,pr){aiSet.clear();let n=0,rows='';const lab={};SECTIONS.forEach(s=>s[1].forEach(f=>lab[f[0]]=f[1]));PFIELDS.forEach(f=>lab['p_'+f[0]]=f[1]);
+ Object.entries(got).forEach(([k,v])=>{if(v){P[k]=v;aiSet.add(k);n++;rows+=`<tr><td>${lab[k]}</td><td>${esc(v)}</td><td>中</td></tr>`}});
+ const pv=Object.entries(pr).filter(([k,v])=>v);if(pv.length){if(!P.products||!P.products.length||P.products[0].pname)P.products=[{}].concat(P.products||[]).slice(0,1).concat([]);const p=P.products[0]={};pv.forEach(([k,v])=>{p[k]=v;aiSet.add('p0_'+k);n++;rows+=`<tr><td>产品1·${lab['p_'+k]}</td><td>${esc(v)}</td><td>中</td></tr>`})}
+ renderForm();$('#aiOut').innerHTML=`<p class="ok">✨ 已提取 ${n} 个字段（演示规则引擎，可信度均为“中”，请核对）</p>${rows?`<table><tr><th>字段</th><th>值</th><th>可信度</th></tr>${rows}</table>`:''}`}
+// ---- personas
+const TYPE_EN={'进口商':'Importer / Distributor','批发商':'Wholesaler','品牌方':'Brand Owner (OEM buyer)','零售商':'Retail Chain','工程商':'Contractor / Project Buyer','电商卖家':'Amazon / E-commerce Seller'};
+const TYPE_ROLE={'进口商':'Purchasing Manager, Owner','批发商':'Buyer, Category Manager','品牌方':'Product Manager, Sourcing Director','零售商':'Category Buyer','工程商':'Project Manager, Procurement','电商卖家':'Founder, Sourcing Manager'};
+const TYPE_PAIN={'进口商':'稳定供货、价格竞争力、认证齐全','批发商':'库存周转、价格、起订量灵活','品牌方':'品质一致性、定制能力、保密','零售商':'包装合规、交期准时、售后','工程商':'项目认证（UL/DLC）、质保、批量交付','电商卖家':'小 MOQ、快速打样、差评率'};
+function genPersonas(){collect();const types=(P.custTypes&&P.custTypes.length?P.custTypes:['进口商','批发商','品牌方']).slice(0,5),mk=(P.markets||'USA').split(/[,，、]/).map(s=>s.trim()).filter(Boolean),prods=(P.products||[]).map(p=>p.pname).filter(Boolean),pe=prods[0]||'your product';
+ personas=types.map((t,i)=>({name:`${mk[i%mk.length]} ${TYPE_EN[t]}`,type:t,country:mk[i%mk.length],size:t==='品牌方'||t==='零售商'?'中大型（50-500人）':'中小型（10-200人）',roles:TYPE_ROLE[t],pain:TYPE_PAIN[t],angle:[P.adv1,P.adv2,P.adv3].filter(Boolean)[i%3]||'',kw:[...prods.map(p=>`${p} ${t==='进口商'?'importer':t==='批发商'?'wholesale':t==='工程商'?'project supplier':t==='品牌方'?'brand':'distributor'} ${mk[i%mk.length]}`),`${pe} distributor`,`buy ${pe} bulk`]}));
+ if(personas.length<3)personas.push({name:`${mk[0]} Amazon / E-commerce Seller`,type:'电商卖家',country:mk[0],size:'小型',roles:TYPE_ROLE['电商卖家'],pain:TYPE_PAIN['电商卖家'],angle:P.adv3||'',kw:[`${pe} amazon seller`,`private label ${pe}`]});
+ SS('personas',personas);renderPersonas();toast('已生成 '+personas.length+' 个画像（演示）')}
+function renderPersonas(){$('#personaBox').innerHTML=personas.length?personas.map((p,i)=>`<div class="persona card"><h3 contenteditable data-i="${i}" data-f="name">${esc(p.name)}</h3>
+<div style="font-size:13px;line-height:1.9">国家：<span contenteditable data-i="${i}" data-f="country">${esc(p.country)}</span><br>类型：${esc(p.type)}　规模：<span contenteditable data-i="${i}" data-f="size">${esc(p.size)}</span><br>决策人：<span contenteditable data-i="${i}" data-f="roles">${esc(p.roles)}</span><br>痛点：<span contenteditable data-i="${i}" data-f="pain">${esc(p.pain)}</span><br>切入点：<span contenteditable data-i="${i}" data-f="angle">${esc(p.angle)}</span></div>
+<div style="margin-top:6px">🔍 搜索关键词：<br>${p.kw.map(k=>`<span class="tag">${esc(k)}</span>`).join('')}</div><button class="btn r s" style="margin-top:8px" onclick="personas.splice(${i},1);SS('personas',personas);renderPersonas()">删除</button></div>`).join(''):'<p style="color:#6b7280">尚未生成画像</p>';
+ $$('#personaBox [contenteditable]').forEach(e=>e.onblur=()=>{personas[e.dataset.i][e.dataset.f]=e.textContent;SS('personas',personas)})}
+// ---- leads
+const FAKE={Germany:['LichtHandel GmbH','Bauwelt Elektro GmbH','Nordlicht Vertrieb'],USA:['BrightPath Supply LLC','Midwest Lighting Distributors','ProBuild Contractors Inc.'],UK:['Albion Electrical Wholesale','Thames Lighting Ltd'],Australia:['Southern Cross Electrical Pty','OzBright Imports'],Poland:['ElektroPol Sp. z o.o.'],Brazil:['Luz Brasil Importadora']};
+const NAMES=['Michael Weber','Sarah Johnson','David Smith','Anna Kowalski','James Brown','Laura Fischer','Tom Wilson','Emma Davis'];
+function genLeads(){collect();if(!personas.length)genPersonas();const pe=((P.products||[])[0]||{}).pname||'products';let n=0;leads=[];
+ personas.forEach(p=>{(FAKE[p.country]||[p.country+' Trading Co.',p.country+' Supply Group']).slice(0,2).forEach(c=>{leads.push({id:Date.now()+n,company:c,country:p.country,type:p.type,biz:`${['近12个月进口 '+(8+n*3)+' 柜 '+pe,'官网销售 '+pe+' 及相关品类','从中国采购，现供应商为越南工厂','B2B 平台询价过 '+pe][n%4]}`,contact:NAMES[n%8],cTitle:p.roles.split(',')[0],email:NAMES[n%8].split(' ')[0].toLowerCase()+'@'+c.toLowerCase().replace(/[^a-z]/g,'').slice(0,12)+'.example',persona:p.name,status:'待开发'});n++})});
+ leads.push({id:Date.now()+99,company:'Random Gift Shop',country:'Kenya',type:'零售商',biz:'小型礼品店，无相关进口记录',contact:'John Doe',cTitle:'Owner',email:'john@giftshop.example',persona:'-',status:'待开发'});
+ scoreLeads();toast('已生成 '+leads.length+' 条示例线索')}
+function scoreLeads(){const mk=(P.markets||'').toLowerCase(),types=P.custTypes||[],ex=(P.exclude||'').toLowerCase();
+ leads.forEach(l=>{let s=0;if(mk.includes(l.country.toLowerCase()))s+=40;if(types.includes(l.type))s+=30;if(/进口|采购|询价|官网销售/.test(l.biz))s+=20;if(/柜/.test(l.biz))s+=10;if(ex&&ex.includes(l.country.toLowerCase()))s-=50;l.pts=s;l.score=s>=80?'A':s>=50?'B':'C'});SS('leads',leads);renderLeads();fillMailLeads()}
+function renderLeads(){const f=$('#fScore').value;$('#leadBody').innerHTML=leads.filter(l=>!f||l.score===f).map(l=>`<tr><td><b>${esc(l.company)}</b><br><small style="color:#6b7280">${esc(l.email)}</small></td><td>${esc(l.country)}</td><td>${esc(l.type)}</td><td>${esc(l.biz)}</td><td>${esc(l.contact)}<br><small>${esc(l.cTitle)}</small></td><td><small>${esc(l.persona)}</small></td><td><span class="sc ${l.score}">${l.score}</span> <small>${l.pts}</small></td>
+<td><select style="width:96px" onchange="setLS(${l.id},this.value)">${['待开发','已发信','已回复','无效'].map(s=>`<option ${s===l.status?'selected':''}>${s}</option>`).join('')}</select></td><td><button class="btn g s" onclick="toMail(${l.id})">写信</button> <button class="btn g s" onclick="toInq(${l.id})">转询盘</button></td></tr>`).join('')||'<tr><td colspan="9" style="color:#6b7280">暂无线索，点击上方按钮生成示例数据</td></tr>'}
+function setLS(id,v){leads.find(l=>l.id===id).status=v;SS('leads',leads)}
+function toMail(id){fillMailLeads();$('#mailLead').value=id;show(3);genMails()}
+function toInq(id){const l=leads.find(l=>l.id===id);inqs.push({id:Date.now(),name:l.company,note:l.country+' · '+l.type,stage:0,src:'主动开发'});l.status='已回复';SS('leads',leads);SS('inqs',inqs);renderKB();toast('已加入询盘看板')}
+// ---- mails
+function fillMailLeads(){const v=$('#mailLead').value;$('#mailLead').innerHTML=leads.length?leads.map(l=>`<option value="${l.id}">[${l.score}] ${esc(l.company)} · ${esc(l.country)}</option>`).join(''):'<option value="">（请先在线索库生成线索）</option>';if(v)$('#mailLead').value=v}
+const STRAT={
+'进口商':{angle:'稳定供货 + 认证齐全 + 价格竞争力',pain:'供应商不稳定、清关认证风险、利润被压缩',cta:'发送目录与 FOB 价格表',tone:'专业正式',subj:['Reliable {p} source for {c} – {cert} certified','Re: stable supply of {p} for {c}','Free sample + price list for {country} market','Last note – {p} supply for {c}'],
+ hook:'Since {c} imports {p} regularly, supply stability and compliance probably matter most. We are a {id} with {cert} certification, and {a1}.',fu:['Many importers we work with switched to us to reduce supplier risk: {cases}. Our on-time delivery rate is above 98%.','We can send a sample so your QC team can verify quality before any order: {sample}.','If you are reviewing suppliers for next season, I can hold current pricing for 30 days.']},
+'批发商':{angle:'价格梯度 + 灵活起订 + 快速补货',pain:'库存周转慢、起订量高、价格没优势',cta:'发送阶梯报价表',tone:'简洁直接',subj:['{p} wholesale price list for {c}','Tiered pricing for {p} – MOQ {moq}','Quick restock option for {c}','Closing the loop on {p} pricing'],
+ hook:'For a wholesaler like {c}, margin and turnover are key. As a {id}, we offer {p} at {price} with MOQ from {moq}, so you can test-sell without heavy stock.',fu:['Our tiered pricing gets 5–8% better at each volume step. Want the full table?','We keep stock of best-sellers, so restock orders can ship in {lead}.','Happy to quote a mixed container if that helps your cash flow.']},
+'品牌方':{angle:'OEM/ODM 定制 + 品质一致性 + 保密',pain:'定制能力弱、品质波动、设计被泄露',cta:'约 15 分钟视频沟通需求 / 打样',tone:'专业正式',subj:['OEM {p} partner for {c}','Re: private-label {p} for {c}','Custom sample of {p} in 7 days','Last note – OEM {p} for {c}'],
+ hook:'I saw {c} sells under its own brand, so I thought our OEM/ODM service might fit. We support {custom}, and {a1}.',fu:['We have supported brands for years: {cases}. NDA available before any design exchange.','Send us your spec or drawing, and we can deliver a custom sample in about 7 days.','When you plan your next product line, I would be glad to join an early design call.']},
+'零售商':{angle:'包装合规 + 准时交付 + 售后保障',pain:'包装/标签不合规、交期延误、退货率高',cta:'发送零售包装方案与样品',tone:'热情友好',subj:['Retail-ready {p} for {c}','Re: shelf-ready packaging for {p}','Sample with retail packaging for {c}','Last note from {co}'],
+ hook:'For retail chains like {c}, shelf-ready packaging and on-time delivery are critical. Our {p} comes with retail packaging and barcodes, certified {cert}.',fu:['We supply retail chains already: {cases}. Return rate is under 0.5%.','Would you like a sample in full retail packaging, so you can see it on the shelf?','If you have a seasonal promotion planned, we can lock production slots now.']},
+'工程商':{angle:'项目认证 + 长质保 + 批量交付',pain:'项目认证不符、质保短、大批量交期赶不上',cta:'提供项目规格书 + 项目报价',tone:'专业正式',subj:['{cert} certified {p} for your projects','Re: project spec sheet for {c}','Lighting/layout support for your next project','Last note – project supply for {c}'],
+ hook:'Contractors like {c} need products that pass project specs. Our {p} is {cert} certified, and {a2}.',fu:['We can provide spec sheets, IES files and test reports for tenders.','For large projects we schedule production in batches to meet site timelines; lead time {lead}.','Send me your next project BOQ, and I will return a quote within 24 hours.']},
+'电商卖家':{angle:'小 MOQ + 快速打样 + 差异化',pain:'MOQ 高、打样慢、产品同质化差评多',cta:'免费打样 + 小单测款',tone:'热情友好',subj:['Low-MOQ {p} for your store','Re: private label {p} – MOQ {moq}','7-day sample for {c}','Last note from {co}'],
+ hook:'For online sellers, testing fast with low risk matters. We do {p} with MOQ from {moq}, logo and package customization, and fast sampling.',fu:['We can help differentiate your listing with custom colors or packaging.','Samples ship in about 7 days: {sample}.','Happy to support a small test order before you scale.']}};
+function stratOf(l){const k=$('#mailStrat').value;return k!=='auto'?k:(STRAT[l.type]?l.type:'进口商')}
+function buildMails(l,k){const st=STRAT[k],p=(P.products||[])[0]||{},pn=p.pname||'our products',first=l.contact.split(' ')[0],co=P.nameEn||P.nameCn,sig=P.signature||P.sender;
+ const v={p:pn,c:l.company,country:l.country,cert:(P.certs||'').split(',')[0]||'CE',moq:p.moq||'-',price:p.price||'competitive prices',lead:p.lead||'-',sample:p.sample||'samples available',custom:p.customize||'OEM/ODM',cases:P.cases||'customers in your region',a1:P.adv1||'',a2:P.adv2||'',co,id:P.identity==='贸易商'?'supplier':'manufacturer'};
+ const f=t=>t.replace(/\{(\w+)\}/g,(_,x)=>v[x]??'');const hi=st.tone==='热情友好'?`Hi ${first},`:`Dear ${first},`,bye=st.tone==='简洁直接'?'Thanks,':'Best regards,';
+ const ctaEn={'进口商':'Shall I send our catalog and FOB price list?','批发商':'Shall I send our tiered wholesale price list?','品牌方':'Would a 15-minute video call next week work to discuss your requirements?','零售商':'Shall I send our retail packaging options and a sample?','工程商':'Could you share your next project spec so I can prepare a project quote?','电商卖家':'Want a free sample to test the market?'}[k];
+ const body0=`${hi}\n\nI'm ${P.sender}, ${P.title} at ${co}. ${f(st.hook)}\n\n• ${p.pspec||pn}\n• MOQ ${v.moq}, lead time ${v.lead}\n• ${P.adv2||P.exportInfo||''}\n\n${ctaEn}\n\n${bye}\n${sig}\n\n—\nIf this isn't relevant, just reply "unsubscribe" and I won't contact you again.`;
+ return[{d:0,s:f(st.subj[0]),b:body0},...st.fu.map((x,i)=>({d:[3,7,14][i],s:f(st.subj[i+1]),b:`${hi}\n\n${i===2?'I don\'t want to fill your inbox, so this is my last note for now. ':i===0?'Just following up on my last email. ':''}${f(x)}\n\n${i===2?ctaEn+'\n\n'+bye+'\n'+sig:bye+'\n'+P.sender}`}))]}
+function stratCard(k,auto,l){const st=STRAT[k];return`<div class="card" style="font-size:13px;line-height:1.8;border-left:4px solid #2563eb">🎯 已应用策略：<b>${k}</b> ${auto?`<span class="tag">自动识别：线索类型 = ${esc(l.type)}</span>`:'<span class="tag">手动指定</span>'}<br>切入角度：${st.angle}<br>对方痛点：${st.pain}<br>CTA：${st.cta}　语气：${st.tone}</div>`}
+function renderStratLib(){$('#mailStrat').innerHTML='<option value="auto">🤖 自动识别（按客户类型）</option>'+Object.keys(STRAT).map(k=>`<option value="${k}">手动：${k}策略</option>`).join('');$('#stratLib').innerHTML=Object.entries(STRAT).map(([k,v])=>`<div class="persona"><b>${k}</b><div style="font-size:12px;line-height:1.7;margin-top:4px">角度：${v.angle}<br>痛点：${v.pain}<br>CTA：${v.cta}<br>语气：${v.tone}<br>首封标题：${esc(v.subj[0])}</div></div>`).join('')}
+function genMails(){collect();const l=leads.find(x=>x.id==$('#mailLead').value);if(!l)return toast('请先选择线索');const k=stratOf(l),mails=buildMails(l,k);
+ $('#stratInfo').innerHTML=stratCard(k,$('#mailStrat').value==='auto',l);
+ $('#mailBox').innerHTML=`<div class="card" style="font-size:13px">🧾 客户情报卡 <span class="demo">示例</span>：<b>${esc(l.company)}</b>（${esc(l.country)} · ${esc(l.type)} · 评分 ${l.score}）— ${esc(l.biz)}；决策人 ${esc(l.contact)}（${esc(l.cTitle)}）；${P.review==='开启'?'⚠ 已开启人工审核：确认后才会发送':'自动发送'}</div>`+mails.map((m,i)=>`<div class="mail card"><div class="row" style="justify-content:space-between"><b>${i?'跟进 '+i:'首封开发信'} · 第 ${m.d} 天</b><button class="btn g s" onclick="cp(${i})">📋 复制</button></div><div style="font-size:13px;margin-top:6px">To: ${esc(l.email)}<br>Subject: <b id="s${i}">${esc(m.s)}</b></div><pre id="m${i}" contenteditable>${esc(m.b)}</pre></div>`).join('');window._mails=mails;l.status=l.status==='待开发'?'已发信':l.status;l.strat=k;SS('leads',leads)}
+function genBatch(){collect();const ls=leads.filter(l=>l.score==='A'||l.score==='B');if(!ls.length)return toast('没有 A/B 类线索');let n=0;window._mails=null;
+ $('#stratInfo').innerHTML=`<div class="card" style="font-size:13px">⚡ 批量生成完成：${ls.length} 条 A/B 线索，每条 4 封（共 ${ls.length*4} 封），策略按客户类型自动切换${$('#mailStrat').value!=='auto'?'（当前手动统一为「'+$('#mailStrat').value+'」）':''}。${P.review==='开启'?'⚠ 人工审核已开启，确认后发送。':''}</div>`;
+ $('#mailBox').innerHTML=ls.map(l=>{const k=stratOf(l),m=buildMails(l,k);if(l.status==='待开发')l.status='已发信';l.strat=k;n++;return`<details class="mail card"><summary><span class="sc ${l.score}">${l.score}</span> <b>${esc(l.company)}</b> · ${esc(l.country)} · <span class="tag">策略：${k}</span> — ${esc(m[0].s)}</summary>${m.map((x,i)=>`<div style="margin-top:10px"><b>${i?'跟进 '+i:'首封'} · 第 ${x.d} 天</b> · Subject: ${esc(x.s)}<pre>${esc(x.b)}</pre></div>`).join('')}</details>`}).join('');SS('leads',leads);toast('已批量生成 '+n+' 组')}
+function cp(i){const t='Subject: '+$('#s'+i).innerText+'\n\n'+$('#m'+i).innerText;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('已复制'),()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();toast('已复制')})}
+// ---- kanban
+const STAGES=['新询盘','已报价','样品','成交','流失'];
+if(!inqs)inqs=WS.cur!=='demo'?[]:[{id:1,name:'BrightPath Supply LLC',note:'询 600x600 面板灯 2000pcs（示例）',stage:0,src:'主动开发'},{id:2,name:'LichtHandel GmbH',note:'已发 FOB 报价 $7.2（示例）',stage:1,src:'独立站'},{id:3,name:'OzBright Imports',note:'样品已寄出 DHL（示例）',stage:2,src:'主动开发'},{id:4,name:'Thames Lighting Ltd',note:'首单 1x20GP（示例）',stage:3,src:'B2B平台'}];
+function renderKB(){$('#kb').innerHTML=STAGES.map((s,i)=>`<div class="col" data-s="${i}"><h4>${s} (${inqs.filter(q=>q.stage==i).length})</h4>${inqs.filter(q=>q.stage==i).map(q=>`<div class="it" draggable="true" data-id="${q.id}"><b>${esc(q.name)}</b>${q.leadId?' 🔗':''} <span class="tag">${esc(q.src||'')}</span><br>${esc(q.note)}<div class="row" style="margin-top:4px">${i>0?`<button class="btn g s" onclick="mv(${q.id},-1)">←</button>`:''}${i<4?`<button class="btn g s" onclick="mv(${q.id},1)">→</button>`:''}${i<2?`<button class="btn g s" onclick="alert('🤖 演示：正式版此处由AI根据档案起草报价回复/报价单')">AI回复</button>`:''}</div></div>`).join('')}</div>`).join('');
+ $$('.it').forEach(e=>e.ondragstart=ev=>ev.dataTransfer.setData('id',e.dataset.id));$$('.col').forEach(c=>{c.ondragover=e=>e.preventDefault();c.ondrop=e=>{const q=inqs.find(q=>q.id==e.dataTransfer.getData('id'));if(q){q.stage=+c.dataset.s;SS('inqs',inqs);renderKB()}}})}
+function mv(id,d){const q=inqs.find(q=>q.id===id);q.stage+=d;SS('inqs',inqs);renderKB()}
+function addInq(){const n=$('#inqName').value.trim();if(!n)return;inqs.push({id:Date.now(),name:n,note:$('#inqNote').value,stage:0,src:'手动/展会'});SS('inqs',inqs);$('#inqName').value=$('#inqNote').value='';renderKB()}
+// ---- site
+let siteHTML='';
+function genSite(){collect();const c=$('#siteColor').value,co=esc(P.nameEn||P.nameCn),ps=(P.products||[]).filter(p=>p.pname);
+ siteHTML=`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(SEO.fix.title&&SEO.kw.length?pages()[0].t:co+' | '+ps.map(p=>p.pname).join(', '))}</title>${seoHead()}
+<style>body{margin:0;font-family:Arial,sans-serif;color:#222}nav{position:sticky;top:0;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:14px 6%;box-shadow:0 1px 4px #0001;z-index:2}nav a{margin-left:20px;color:#333;text-decoration:none;font-size:14px}.logo{font-weight:bold;color:${c}}
+.hero{background:linear-gradient(120deg,${c},#0008),${c};color:#fff;padding:90px 6%}.hero h1{font-size:38px;margin:0 0 12px}.hero a{display:inline-block;margin-top:20px;background:#fff;color:${c};padding:12px 26px;border-radius:6px;text-decoration:none;font-weight:bold}
+section{padding:60px 6%}h2{color:${c};font-size:28px}.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}.c{border:1px solid #eee;border-radius:10px;padding:20px}.ph{height:150px;background:#f1f3f6;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#999;margin-bottom:12px}
+.alt{background:#f7f8fa}.badge{display:inline-block;border:2px solid ${c};color:${c};padding:12px 22px;margin:6px;border-radius:8px;font-weight:bold}form input,form textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ccc;border-radius:6px;box-sizing:border-box}form button{background:${c};color:#fff;border:0;padding:12px 30px;border-radius:6px;font-size:15px}footer{background:#111;color:#aaa;padding:30px 6%;font-size:13px}</style></head><body>
+<nav><span class="logo">${co}</span><div><a href="#home">Home</a><a href="#products">Products</a><a href="#about">About</a><a href="#cert">Certificates</a>${SEO.articles.length?'<a href="#blog">Blog</a>':''}<a href="#contact">Contact</a></div></nav>
+<div class="hero" id="home"><h1>Professional ${esc(ps.map(p=>p.pname).join(' & ')||'Products')} ${P.identity==='贸易商'?'Supplier':'Manufacturer'}</h1><p>${esc(P.adv1)}<br>${esc(P.adv2)}</p><a href="#contact">Get a Quote</a></div>
+<section id="products"><h2>Our Products</h2><div class="g">${ps.map(p=>`<div class="c"><div class="ph">${1?`<img src="${esc(p.img||'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="240" height="150"><rect width="100%" height="100%" fill="#e5e7eb"/><text x="50%" y="52%" text-anchor="middle" font-family="Arial" font-size="14" fill="#6b7280">'+p.pname.replace(/[<&]/g,'')+'</text></svg>'))}"${SEO.fix.alt?` alt="${esc(p.pname+' – '+(p.pcat||'')+' by '+(P.nameEn||''))}"`:''} style="max-height:150px">`:'Product Image'}</div><h3${SEO.fix.slug?` id="${slug(p.pname)}"`:''}>${esc(p.pname)}</h3><p style="font-size:14px;color:#555">${esc(p.pspec)}</p><p style="font-size:13px">MOQ: ${esc(p.moq)} · Lead time: ${esc(p.lead)}<br>${esc(p.customize)}</p>${SEO.fix.links?`<a href="#contact">Get a quote for ${esc(p.pname)} →</a>`:''}</div>`).join('')}</div></section>
+<section id="about" class="alt"><h2>About Us</h2><p>${co}${P.founded?' was founded in '+esc(P.founded):''}${P.location?', located in '+esc(P.location):''}. ${P.staff?'Team & facility: '+esc(P.staff)+'. ':''}${P.capacity?'Annual capacity: '+esc(P.capacity)+'. ':''}</p><div class="g">${[P.adv1,P.adv2,P.adv3].filter(Boolean).map(a=>`<div class="c">✔ ${esc(a)}</div>`).join('')}</div>${P.cases?`<p><b>Cooperation:</b> ${esc(P.cases)}</p>`:''}${P.fairs?`<p><b>Exhibitions:</b> ${esc(P.fairs)}</p>`:''}</section>
+<section id="cert"><h2>Certificates</h2>${(P.certs||'').split(/[,，、]/).filter(s=>s.trim()).map(s=>`<span class="badge">${esc(s.trim())}</span>`).join('')}<p style="color:#666">${esc(P.patents)}</p></section>
+${SEO.fix.faq?`<section id="faq"><h2>FAQ</h2>${faqs().map(q=>`<h3>${esc(q[0])}</h3><p>${esc(q[1])}</p>`).join('')}</section>`:''}${SEO.articles.length?`<section id="blog" class="alt"><h2>Blog & Buying Guides</h2>${SEO.articles.map(a=>`<article id="${a.slug}" class="c" style="margin-bottom:16px;background:#fff"><h2 style="font-size:22px">${esc(a.title)}</h2><small>${a.date} · ${esc(a.kw)}</small>${a.body}</article>`).join('')}</section>`:''}<section id="contact" class="alt"><h2>Send Inquiry</h2><form onsubmit="event.preventDefault();try{parent.siteInq&&parent.siteInq(this)}catch(e){};alert('Thank you! (Demo: inquiry sent to the CRM board)');this.reset()"><input placeholder="Name *" required><input placeholder="Email *" type="email" required><input placeholder="Company / Country"><textarea rows="5" placeholder="Products, quantity, requirements *" required></textarea><button>Submit Inquiry</button></form></section>
+<footer>© ${new Date().getFullYear()} ${co} · ${esc(P.email)} · ${esc(P.website)}</footer></body></html>`;
+ $('#siteFrame').srcdoc=siteHTML;SS('siteDone',1);renderSteps();toast('网站已生成（演示）')}
+function dlSite(){if(!siteHTML)genSite();dl('site-'+(P.nameEn||'company').replace(/\W+/g,'-').toLowerCase()+'.html',siteHTML,'text/html')}
+// ---- tabs
+function show(i){CUR=i;$$('nav button').forEach((b,j)=>b.classList.toggle('on',i===j));$$('.tab').forEach((t,j)=>t.classList.toggle('on',i===j));if(i>0)collect();if(i===2)renderLeads();if(i===3)fillMailLeads();if(i===5&&!siteHTML)genSite();if(i===6)renderDash();if(i===7)renderSet();renderSteps();window.scrollTo(0,0)}
+$('#nav').innerHTML=TABS.map((t,i)=>`<button onclick="show(${i})">${t}</button>`).join('');
+
+// ---- reply recognition (demo)
+const REPLIES={'有兴趣':['Thanks for reaching out. We are interested, please tell me more about your company.','Sounds interesting. Can we have a call next week?'],'要报价':['Please send me your best price for 2000 pcs, FOB Ningbo.','Can you quote for a 40HQ container? Need price list.'],'要样品':['Could you send a sample to our office? We will cover shipping.','We would like to test samples before ordering.'],'拒绝':['Not interested, please remove us from your list.','We already have a supplier, thanks. Unsubscribe.']};
+function classify(t){t=t.toLowerCase();if(/not interested|unsubscribe|remove|already have/.test(t))return'拒绝';if(/sample|test/.test(t))return'要样品';if(/price|quote|quotation|cost/.test(t))return'要报价';return'有兴趣'}
+let replies=LS('replies')||[],pollT=null;
+function simReply(){const pool=leads.filter(l=>l.status==='已发信');if(!pool.length){toast('没有“已发信”的线索，请先生成开发信');if(pollT)togglePoll(true);return}
+ const l=pool[Math.floor(Math.random()*pool.length)],ks=Object.keys(REPLIES),ik=ks[Math.floor(Math.random()*ks.length)],txt=REPLIES[ik][Math.floor(Math.random()*2)],intent=classify(txt);
+ l.status='已回复';l.intent=intent;SS('leads',leads);let card='';
+ if(intent!=='拒绝'){inqs.push({id:Date.now(),name:l.company,note:`[${intent}] ${txt.slice(0,50)}`,stage:intent==='要样品'?2:0,src:'开发信回复',leadId:l.id});SS('inqs',inqs);renderKB();card=' → 已建询盘卡片'}
+ replies.unshift({t:new Date().toLocaleTimeString(),co:l.company,txt,intent,card});SS('replies',replies);renderReplies();toast(l.company+'：'+intent+card)}
+function renderReplies(){const c={'有兴趣':'A','要报价':'A','要样品':'B','拒绝':'C'};$('#replyLog').innerHTML=replies.length?`<table><tr><th>时间</th><th>客户</th><th>回复内容</th><th>AI识别意图</th><th>动作</th></tr>${replies.slice(0,30).map(r=>`<tr><td>${r.t}</td><td>${esc(r.co)}</td><td>${esc(r.txt)}</td><td><span class="sc ${c[r.intent]}">${r.intent}</span></td><td>${r.card?'已建询盘卡片（来源：开发信回复）':'标记拒绝，停止跟进'}</td></tr>`).join('')}</table>`:'<p style="font-size:13px;color:#6b7280">暂无回复记录</p>'}
+function togglePoll(off){if(off||!$('#autoPoll').checked){clearInterval(pollT);pollT=null;$('#autoPoll').checked=false}else{pollT=setInterval(simReply,6000);simReply()}}
+// ---- examples for every field
+const EX=Object.assign({},DEMO,DEMO.products[0],{custTypes:'',img:'https://www.sunrise-led-demo.com/img/panel-600.jpg'});
+const exStr=k=>{const v=EX[k];return v==null||v===''?'':String(v).split('\n')[0]};
+function fillSecEx(i){collect();(i==='p'?PFIELDS:SECTIONS[i][1]).forEach(f=>{const k=f[0];if(i==='p'){(P.products||[]).forEach(p=>{if(!p[k])p[k]=DEMO.products[0][k]})}else if(f[3]==='multi'){if(!(P[k]||[]).length)P[k]=DEMO[k].slice()}else if(!P[k])P[k]=DEMO[k]});renderForm();toast('已把示例填入空白字段，请按实际修改')}
+// ---- SEO module (demo)
+let SEO=LS('seo')||{kw:[],fix:{},articles:[],plan:[]};const saveSEO=()=>SS('seo',SEO);
+function seoTab(n){$$('.stab').forEach((b,i)=>b.classList.toggle('on',i===n));$$('.spane').forEach((p,i)=>p.style.display=i===n?'block':'none');if(n===1)renderKW();if(n===2)renderOnpage();if(n===3)renderAudit();if(n===4)renderPlan();if(n===5)renderRank()}
+const slug=t=>String(t).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const mkts=()=>(P.markets||'USA').split(/[,，、]/).map(s=>s.trim()).filter(Boolean);
+const langs=()=>{const S=G('settings')||{};const m={'English':'en','德语':'de','西班牙语':'es','法语':'fr','俄语':'ru','阿拉伯语':'ar'};const l=(S.seoLangs||P.lang||'English').split(/[+,，\s]+/).map(x=>m[x.trim()]||x.trim()).filter(x=>/^[a-z]{2}$/.test(x));return[...new Set(['en',...l])]};
+const dom=()=>'https://'+(P.website||'www.example.com').replace(/^https?:\/\//,'').replace(/\/$/,'');
+function genKW(){collect();const ps=(P.products||[]).filter(p=>p.pname),cert=(P.certs||'CE').split(/[,，]/)[0].trim(),kw=[];
+ ps.forEach((p,i)=>{const n=p.pname.toLowerCase(),pg='/products/'+slug(p.pname),c=p.pname;
+  [[n+' manufacturer','核心','交易','高'],[n+' supplier','核心','交易','高'],[n+' factory china','核心','交易','高'],['wholesale '+n,'核心','商业','中']].forEach(x=>kw.push({k:x[0],t:x[1],intent:x[2],pri:x[3],page:i?pg:'/',cl:c}));
+  mkts().slice(0,3).forEach(m=>kw.push({k:n+' supplier '+m.toLowerCase(),t:'长尾',intent:'交易',pri:'中',page:pg,cl:c}));
+  [['oem '+n+' '+cert.toLowerCase()+' certified','长尾','商业'],['bulk '+n+' price','长尾','交易'],[(p.pspec||'').split(',')[0].toLowerCase()+' '+n,'长尾','商业']].forEach(x=>x[0].trim()&&kw.push({k:x[0].trim(),t:x[1],intent:x[2],pri:'中',page:pg,cl:c}));
+  [['how to choose a reliable '+n+' supplier','/blog/'],['what certifications does '+n+' need for '+(mkts()[0]||'export'),'/blog/'],[n+' vs traditional alternatives: which is better','/blog/'],['how much does '+n+' cost from china','/blog/']].forEach(x=>kw.push({k:x[0],t:'问题',intent:'信息',pri:'低',page:x[1]+slug(x[0]),cl:c}))});
+ SEO.kw=kw;saveSEO();renderKW();toast('已生成 '+kw.length+' 个关键词（演示，非真实搜索量）')}
+function renderKW(){$('#kwBox').innerHTML=SEO.kw.length?`<table><tr><th>关键词</th><th>类型</th><th>搜索意图</th><th>优先级（估算）</th><th>搜索量</th><th>映射页面</th><th>词簇</th></tr>${SEO.kw.map(k=>`<tr><td>${esc(k.k)}</td><td><span class="tag">${k.t}</span></td><td>${k.intent}</td><td>${k.pri} <small style="color:#9ca3af">估算</small></td><td><small style="color:#9ca3af">未接入（需 Keyword Planner）</small></td><td><code>${esc(k.page)}</code></td><td>${esc(k.cl)}</td></tr>`).join('')}</table>`:'<p style="color:#6b7280;font-size:13px">点击「生成关键词」</p>'}
+function pages(){const ps=(P.products||[]).filter(p=>p.pname),core=k=>(SEO.kw.find(x=>x.cl===k&&x.t==='核心')||{}).k||k,co=P.nameEn||P.nameCn||'Company',p0=(ps[0]||{}).pname||'Products';
+ const cs=co.replace(/[,\s]*(Co\.,?\s*Ltd\.?|Inc\.?|LLC|Limited|Corp\.?)$/i,''),ht=[`${p0} Manufacturer & Supplier | ${cs}`,`${p0} Manufacturer | ${cs}`,`${p0} Manufacturer`].find(x=>x.length<=60)||p0.slice(0,60);
+ return[{u:'/',t:ht,d:`${co} is a ${P.identity==='贸易商'?'supplier':'manufacturer'} of ${ps.map(p=>p.pname).join(', ')}. ${P.certs||''} certified, MOQ ${(ps[0]||{}).moq||''}. Get a quote today.`,h1:`Professional ${ps.map(p=>p.pname).join(' & ')} Manufacturer`},
+ ...ps.map(p=>({u:'/products/'+slug(p.pname),t:`${core(p.pname).replace(/\b\w/g,c=>c.toUpperCase())} – ${p.pname} | ${co}`,d:`${p.pname}: ${(p.pspec||'').slice(0,80)}. MOQ ${p.moq||''}, lead time ${p.lead||''}. OEM/ODM available.`,h1:`${p.pname} – ${p.pcat||'Factory Direct'}`})),
+ {u:'/about',t:`About ${co} – ${P.founded?'Since '+P.founded:'Factory Profile'}`,d:`${co}: ${P.staff||''}, ${P.capacity||''}. ${P.adv1||''}`.slice(0,155),h1:`About ${co}`},
+ {u:'/certificates',t:`Certificates (${P.certs||''}) | ${co}`,d:`Our products are certified ${P.certs||''}. ${P.patents||''}`.slice(0,155),h1:'Certificates & Quality'},
+ ...SEO.articles.map(a=>({u:'/blog/'+a.slug,t:a.title+' | '+co,d:a.desc,h1:a.title})),
+ {u:'/contact',t:`Contact & Get a Quote | ${co}`,d:`Send your inquiry to ${co}. Reply within 24 hours.`,h1:'Get a Free Quote'}]}
+function renderOnpage(){const L=langs();$('#onBox').innerHTML=`<p style="font-size:13px">已对生成的网站自动应用（点下方「一键全部修复」或在体检里逐项修复后生效）。hreflang 语言：${L.join(', ')}</p><table><tr><th>URL</th><th>Title (${'≤60'})</th><th>Meta Description (≤155)</th><th>H1</th></tr>${pages().map(p=>`<tr><td><code>${esc(p.u)}</code></td><td>${esc(p.t)} <small style="color:${p.t.length>60?'#dc2626':'#16a34a'}">${p.t.length}</small></td><td>${esc(p.d)} <small style="color:${p.d.length>155?'#dc2626':'#16a34a'}">${p.d.length}</small></td><td>${esc(p.h1)}</td></tr>`).join('')}</table>`}
+function sitemap(){return`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${pages().map(p=>`  <url><loc>${dom()}${p.u}</loc>${langs().map(l=>`<xhtml:link rel="alternate" hreflang="${l}" href="${dom()}${l==='en'?'':'/'+l}${p.u}"/>`).join('')}<lastmod>${new Date().toISOString().slice(0,10)}</lastmod></url>`).join('\n')}\n</urlset>`}
+function robots(){return`User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /cart/\n\nSitemap: ${dom()}/sitemap.xml`}
+function seoHead(){const f=SEO.fix,ps=(P.products||[]).filter(p=>p.pname),co=P.nameEn||P.nameCn,pg=pages()[0];let h='';
+ if(f.meta)h+=`<meta name="description" content="${esc(pg.d)}">`;if(f.canonical)h+=`<link rel="canonical" href="${dom()}/">`;
+ if(f.hreflang)h+=langs().map(l=>`<link rel="alternate" hreflang="${l}" href="${dom()}${l==='en'?'':'/'+l}/">`).join('')+`<link rel="alternate" hreflang="x-default" href="${dom()}/">`;
+ if(f.og)h+=`<meta property="og:type" content="website"><meta property="og:title" content="${esc(pg.t)}"><meta property="og:description" content="${esc(pg.d)}"><meta property="og:url" content="${dom()}/"><meta property="og:image" content="${dom()}/og-cover.jpg">`;
+ const LD=[];if(f.schemaOrg)LD.push({'@context':'https://schema.org','@type':'Organization',name:co,url:dom(),foundingDate:P.founded,address:P.location,email:P.email});
+ if(f.schemaProduct)ps.forEach(p=>LD.push({'@context':'https://schema.org','@type':'Product',name:p.pname,category:p.pcat,description:p.pspec,brand:{'@type':'Brand',name:co},offers:{'@type':'AggregateOffer',priceCurrency:'USD',description:p.price}}));
+ if(f.faq)LD.push({'@context':'https://schema.org','@type':'FAQPage',mainEntity:faqs().map(q=>({'@type':'Question',name:q[0],acceptedAnswer:{'@type':'Answer',text:q[1]}}))});
+ if(f.breadcrumb)LD.push({'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'Home',item:dom()+'/'},{'@type':'ListItem',position:2,name:'Products',item:dom()+'/products'}]});
+ return h+LD.map(x=>'<script type="application/ld+json">'+JSON.stringify(x).replace(/</g,'\\u003c')+'<\/script>').join('')}
+function faqs(){const p=(P.products||[])[0]||{};return[['What is your MOQ?',`Our MOQ for ${p.pname||'products'} is ${p.moq||'negotiable'}.`],['What is the lead time?',`Usually ${p.lead||'25-30 days'} after deposit.`],['Do you offer samples?',p.sample||'Yes, samples are available.'],['Which certifications do you have?',P.certs||'CE, RoHS'],['Do you support OEM/ODM?',p.customize||'Yes.']]}
+const CHECKS=[['title','Title 含核心关键词且 ≤60 字符',8],['meta','Meta Description',8],['h1','H1 唯一',6],['h2','H2/H3 层级结构',5],['alt','图片 Alt 文本',7],['slug','语义化 URL Slug',5],['links','内部链接（产品↔博客↔询盘）',6],['canonical','Canonical 标签',6],['hreflang','hreflang 多语言',6],['og','Open Graph 社交卡片',5],['schemaOrg','Schema: Organization',7],['schemaProduct','Schema: Product',7],['faq','FAQ 区块 + FAQPage Schema',6],['breadcrumb','Schema: BreadcrumbList',4],['sitemap','sitemap.xml',6],['robots','robots.txt',4],['blog','博客内容（≥1 篇）',4]];
+function audit(){const h=siteHTML||'',f=SEO.fix,kw=(SEO.kw.find(k=>k.t==='核心')||{}).k||'';const t=(h.match(/<title>([^<]*)/)||[])[1]||'';
+ const ok={title:!!kw&&t.toLowerCase().includes(kw.split(' ')[0])&&t.length<=60,meta:/name="description"/.test(h),h1:(h.match(/<h1/g)||[]).length===1,h2:/<h2/.test(h)&&/<h3/.test(h),alt:!/<img(?![^>]*alt=)/.test(h)&&/alt="[^"]+"/.test(h),slug:!!f.slug,links:!!f.links,canonical:/rel="canonical"/.test(h),hreflang:/hreflang=/.test(h),og:/og:title/.test(h),schemaOrg:/"Organization"/.test(h),schemaProduct:/"@type":"Product"/.test(h),faq:/"FAQPage"/.test(h),breadcrumb:/"BreadcrumbList"/.test(h),sitemap:!!f.sitemap,robots:!!f.robots,blog:SEO.articles.length>0};
+ const tot=CHECKS.reduce((a,c)=>a+c[2],0),got=CHECKS.reduce((a,c)=>a+(ok[c[0]]?c[2]:0),0);return{ok,score:Math.round(got/tot*100)}}
+function fixOne(k){if(k==='title'&&!SEO.kw.length)genKW();if(k==='blog'){genArticle(0);return}SEO.fix[k]=true;if(k==='alt'||k==='h2')SEO.fix.alt=SEO.fix.h2=true;saveSEO();genSite();renderAudit();toast('已修复：'+(CHECKS.find(c=>c[0]===k)||[])[1])}
+function fixAll(){if(!SEO.kw.length)genKW();CHECKS.forEach(c=>c[0]!=='blog'&&(SEO.fix[c[0]]=true));if(!SEO.articles.length){if(!SEO.plan.length)genPlan();genArticle(0,1)}saveSEO();genSite();renderAudit();renderOnpage();toast('已一键修复全部 SEO 问题')}
+function renderAudit(){if(!siteHTML)genSite();const a=audit();SEO.score=a.score;saveSEO();const col=a.score>=80?'#16a34a':a.score>=50?'#d97706':'#dc2626';
+ $('#auditBox').innerHTML=`<div class="row" style="gap:20px"><div style="font-size:48px;font-weight:700;color:${col}">${a.score}</div><div>SEO 体检得分 / 100<br><small style="color:#6b7280">检测对象：当前生成的独立站 HTML（规则检测，演示）。正式版接入 Lighthouse / PageSpeed / GSC 覆盖率。</small></div><button class="btn" onclick="fixAll()">🛠 一键全部修复</button></div>
+ <table style="margin-top:10px"><tr><th>检查项</th><th>权重</th><th>状态</th><th></th></tr>${CHECKS.map(c=>`<tr><td>${c[1]}</td><td>${c[2]}</td><td>${a.ok[c[0]]?'<span class="sc A">通过</span>':'<span class="sc C">问题</span>'}</td><td>${a.ok[c[0]]?'':`<button class="btn g s" onclick="fixOne('${c[0]}')">一键修复</button>`}</td></tr>`).join('')}</table>`}
+function genPlan(){if(!SEO.kw.length)genKW();const q=SEO.kw.filter(k=>k.t==='问题'||k.t==='长尾').slice(0,8),d=new Date();let n=0;
+ SEO.plan=q.map(k=>{do{d.setDate(d.getDate()+1)}while(![2,5].includes(d.getDay()));n++;const T=k.k.replace(/\b\w/g,c=>c.toUpperCase());
+  return{kw:k.k,cl:k.cl,title:k.t==='问题'?T:`${T}: A Complete Buyer's Guide`,date:d.toISOString().slice(0,10),outline:['Introduction – why buyers search "'+k.k+'"','Key specifications & standards ('+(P.certs||'CE')+')','How to evaluate a supplier (MOQ, lead time, QC)','Case study: '+((P.cases||'').split(/[；;]/)[0]||'a recent customer'),'FAQ','Conclusion + CTA: get a quote'],done:false}});saveSEO();renderPlan()}
+function renderPlan(){$('#planBox').innerHTML=SEO.plan.length?`<p style="font-size:13px">发布节奏：每周 2 篇（周二、周五），共 ${SEO.plan.length} 篇，已发布 ${SEO.articles.length} 篇</p><table><tr><th>计划日期</th><th>文章标题</th><th>目标关键词 / 词簇</th><th>大纲</th><th></th></tr>${SEO.plan.map((p,i)=>`<tr><td>${p.date}</td><td>${esc(p.title)}</td><td>${esc(p.kw)}<br><span class="tag">${esc(p.cl)}</span></td><td><small>${p.outline.map((o,j)=>`H2 ${j+1}. ${esc(o)}`).join('<br>')}</small></td><td>${p.done?'<span class="sc A">已发布</span>':`<button class="btn g s" onclick="genArticle(${i})">✍️ 生成并发布</button>`}</td></tr>`).join('')}</table>`:'<p style="color:#6b7280;font-size:13px">点击「生成内容计划」</p>'}
+function genArticle(i,quiet){if(!SEO.plan.length)genPlan();const p=SEO.plan[i];if(!p||p.done)return;const pr=(P.products||[]).find(x=>x.pname===p.cl)||{};
+ const body=p.outline.map((o,j)=>`<h3>${esc(o)}</h3><p>${j===0?`Many importers searching for "${esc(p.kw)}" want a supplier they can trust. In this guide, ${esc(P.nameEn||'we')} share practical tips from ${P.founded?new Date().getFullYear()-P.founded+' years':'years'} of export experience.`:j===1?`${esc(pr.pname||'The product')}: ${esc(pr.pspec||'')}. Make sure it is certified ${esc(P.certs||'CE')} for your market.`:j===2?`Check MOQ (${esc(pr.moq||'-')}), lead time (${esc(pr.lead||'-')}) and sample policy (${esc(pr.sample||'-')}). ${esc(P.adv1||'')}`:j===3?esc(P.cases||'Contact us for references.'):j===4?faqs().slice(0,2).map(q=>`<b>${esc(q[0])}</b> ${esc(q[1])}`).join('<br>'):`Ready to source? <a href="#contact">Send us an inquiry</a> or view our <a href="#products">products</a>.`}</p>`).join('');
+ SEO.articles.push({title:p.title,slug:slug(p.title).slice(0,60),kw:p.kw,desc:`${p.title}. Practical guide for buyers: specs, certifications, MOQ and supplier tips.`.slice(0,155),body,date:p.date});p.done=true;saveSEO();genSite();renderPlan();if(!quiet)toast('已生成文章并插入网站博客（演示模版，正式版由大模型撰写）')}
+function renderRank(){const k=SEO.kw.filter(x=>x.t!=='问题').slice(0,12);$('#rankBox').innerHTML=`<div class="kpi" style="margin-bottom:12px">${[['追踪关键词',k.length],['SEO 体检分',SEO.score??'-'],['已发布文章',SEO.articles.length],['已收录页面','未接入'],['平均排名','未接入'],['自然点击','未接入']].map(([a,b])=>`<div><b style="font-size:20px">${b}</b><span>${a}</span></div>`).join('')}</div>
+ <table><tr><th>关键词</th><th>目标页面</th><th>Google 排名</th><th>展示</th><th>点击</th><th>收录状态</th></tr>${k.map(x=>`<tr><td>${esc(x.k)}</td><td><code>${esc(x.page)}</code></td><td>—</td><td>—</td><td>—</td><td><span class="nc">未接入 Search Console</span></td></tr>`).join('')||'<tr><td colspan="6" style="color:#6b7280">先生成关键词</td></tr>'}</table>
+ <p style="font-size:12px;color:#6b7280">正式版：在「设置 → SEO」授权 Google Search Console 后，每日同步排名、展示、点击、索引覆盖率；以上「—」均为占位，无真实数据。</p>`}
+
+// ---- workspaces
+function renderWS(){$('#wsSel').innerHTML=WS.list.map(w=>`<option value="${w.id}" ${w.id===WS.cur?'selected':''}>${esc(w.name)}</option>`).join('')}
+function wsSwitch(id){WS.cur=id;GS('ws',WS);location.reload()}
+function wsNew(){const n=prompt('新公司名称（中文）');if(!n)return;const id='c'+Date.now();WS.list.push({id,name:n});WS.cur=id;GS('ws',WS);location.reload()}
+function wsDel(){if(WS.list.length<2)return alert('至少保留一个工作区');if(!confirm('删除工作区「'+WS.list.find(w=>w.id===WS.cur).name+'」及其全部数据？'))return;Object.keys(localStorage).filter(k=>k.startsWith('wm_'+WS.cur+'_')).forEach(k=>localStorage.removeItem(k));WS.list=WS.list.filter(w=>w.id!==WS.cur);WS.cur=WS.list[0].id;GS('ws',WS);location.reload()}
+function exportAll(){const o={};Object.keys(localStorage).filter(k=>k.startsWith('wm_')).forEach(k=>o[k]=localStorage.getItem(k));dl('waimao-all-backup.json',JSON.stringify(o,null,2),'application/json')}
+// ---- site inquiry -> kanban
+function siteInq(f){const v=[...f.querySelectorAll('input,textarea')].map(e=>e.value);inqs.push({id:Date.now(),name:v[2]||v[0],note:(v[3]||'').slice(0,60)+' · '+v[1],stage:0,src:'独立站'});SS('inqs',inqs);renderKB()}
+// ---- guided steps
+const STEPN=['公司资料','客户画像','线索筛选','开发信','询盘管理','独立站'];
+function stepDone(i){return[()=>LS('profile')&&!checkMissingQuiet(),()=>personas.length>0,()=>leads.length>0,()=>leads.some(l=>l.status!=='待开发'),()=>inqs.length>0,()=>!!LS('siteDone')][i]()}
+function checkMissingQuiet(){let n=0;SECTIONS.forEach(s=>s[1].forEach(f=>{const v=P[f[0]];if(f[2]&&(!v||(Array.isArray(v)&&!v.length)))n++}));(P.products||[]).forEach(p=>PFIELDS.forEach(f=>{if(f[2]&&!p[f[0]])n++}));return n+((P.products||[]).length?0:1)}
+function renderSteps(){const d=STEPN.filter((_,i)=>stepDone(i)).length;$('#steps').innerHTML=STEPN.map((n,i)=>`<div class="step ${stepDone(i)?'done':''} ${CUR===i?'cur':''}" onclick="show(${i})">${stepDone(i)?'✅':(i+1)+'.'} ${n}</div>`).join('')+`<div class="step" style="flex:.6" onclick="show(6)">进度 ${d}/6</div>`;
+ const tips=['保存档案后生成客户画像','按画像生成并筛选线索','选择 A 类线索写开发信','跟进回复并管理询盘','生成独立站承接询盘','查看整体效果','',''];
+ $('#nextbar').innerHTML=(CUR>0&&CUR<7?`<button class="btn g" onclick="show(${CUR-1})">← 上一步</button>`:'<span></span>')+(CUR<6?`<button class="btn" onclick="nextStep()">下一步：${tips[CUR]} →</button>`:CUR===6?'<button class="btn g" onclick="show(7)">前往设置 →</button>':'')}
+function nextStep(){if(CUR===0){saveProfile();if(checkMissingQuiet()&&!confirm('还有必填项未填写，仍继续？'))return;if(!personas.length)genPersonas()}if(CUR===1&&!leads.length)genLeads();if(CUR===2){const a=leads.find(l=>l.score==='A');if(a){fillMailLeads();$('#mailLead').value=a.id}}if(CUR===3&&!_mails)genMails();show(CUR+1)}
+window._mails=null;
+// ---- dashboard
+function bars(t,obj,color){const mx=Math.max(1,...Object.values(obj));return`<div class="card"><h2>${t}</h2>${Object.entries(obj).map(([k,v])=>`<div class="bar"><em>${esc(k)}</em><i style="width:${v/mx*70}%;background:${color||'#3b82f6'}"></i>${v}</div>`).join('')}</div>`}
+function renderDash(){const cnt=(a,f)=>a.reduce((o,x)=>{const k=f(x);o[k]=(o[k]||0)+1;return o},{});
+ const sent=leads.filter(l=>['已发信','已回复'].includes(l.status)).length,rep=leads.filter(l=>l.status==='已回复').length,won=inqs.filter(q=>q.stage===3).length;
+ $('#kpi').innerHTML=[['线索总数',leads.length],['A 类线索',leads.filter(l=>l.score==='A').length],['已发开发信',sent],['回复率',sent?Math.round(rep/sent*100)+'%':'-'],['询盘数',inqs.length],['成交',won],['询盘→成交率',inqs.length?Math.round(won/inqs.length*100)+'%':'-'],['SEO 体检分',SEO.score??'-'],['SEO 关键词',SEO.kw.length],['博客文章',SEO.articles.length+'/'+SEO.plan.length],['谷歌收录','未接入']].map(([a,b])=>`<div><b>${b}</b><span>${a}</span></div>`).join('');
+ const sc={A:0,B:0,C:0,...cnt(leads,l=>l.score)},st=cnt(inqs,q=>STAGES[q.stage]);
+ $('#dash').innerHTML=bars('线索评分分布',{'A 类':sc.A,'B 类':sc.B,'C 类':sc.C},'#10b981')+bars('询盘来源',cnt(inqs,q=>q.src||'未知'),'#8b5cf6')+bars('转化漏斗',{'线索':leads.length,'已发信':sent,'已回复':rep,'询盘':inqs.length,'报价+':inqs.filter(q=>q.stage>=1&&q.stage<=3).length,'成交':won},'#f59e0b')+bars('回复意图识别',{'有兴趣':0,'要报价':0,'要样品':0,'拒绝':0,...cnt(leads.filter(l=>l.intent),l=>l.intent)},'#06b6d4')+bars('开发策略使用',cnt(leads.filter(l=>l.strat),l=>l.strat),'#64748b')+bars('询盘阶段',Object.fromEntries(STAGES.map(s=>[s,st[s]||0])),'#ef4444')+bars('线索国家分布',cnt(leads,l=>l.country))+`<div class="card"><h2>🤖 AI 优化建议 <span class="demo">演示</span></h2><p style="font-size:13px;line-height:1.8">${sc.C>sc.A?'C 类线索偏多，建议收紧画像国家与客户类型。':'A 类线索占比良好，优先跟进 A 类。'}<br>${sent&&rep/sent<.1?'回复率低于 10%，建议换切入角度（如样品/案例）。':'保持当前跟进节奏（第 0/3/7/14 天）。'}<br>正式版将由大模型按国家/话术/客户类型分析回复数据，反哺画像与模版。</p></div>`}
+// ---- settings
+const SETF=[['🤖 大模型 LLM',[['llmProvider','服务商','select',['OpenAI 兼容','DeepSeek','通义千问','豆包','Claude','自定义']],['llmBase','API Base URL'],['llmKey','API Key','password'],['llmModel','模型名称']]],
+['✉️ 发信邮箱 / SMTP',[['smtpHost','SMTP 服务器'],['smtpPort','端口'],['smtpUser','账号'],['smtpPass','密码 / 授权码','password'],['smtpDomains','轮换发信子域名（逗号分隔）'],['warmup','域名预热','select',['未开始','进行中','已完成']]]],
+['🔍 数据源',[['k_customs','海关数据（腾道/ImportYeti/Panjiva）Key','password'],['k_apollo','Apollo / Hunter Key','password'],['k_maps','Google Maps API Key','password'],['k_linkedin','LinkedIn 账号/工具','password'],['k_verify','邮箱验证服务 Key','password']]],
+['📈 SEO / Google',[['gscProp','Search Console 资源（网址）'],['gscAuth','GSC OAuth 授权','password'],['kwPlanner','Google Ads Keyword Planner 开发者令牌','password'],['semrush','SEMrush / Ahrefs API Key','password'],['psi','PageSpeed Insights API Key','password'],['seoLangs','站点语言（hreflang）']]],
+['💬 多渠道',[['k_wa','WhatsApp Business API','password'],['k_site','独立站发布（域名 / 托管）']]]];
+const SEX={llmBase:'https://api.deepseek.com/v1',llmKey:'sk-xxxxxxxxxxxxxxxx',llmModel:'deepseek-chat',smtpHost:'smtp.exmail.qq.com',smtpPort:'465',smtpUser:'tina@sunrise-led-demo.com',smtpPass:'授权码 abcd1234efgh',smtpDomains:'mail1.sunrise-led-demo.com, mail2.sunrise-led-demo.com',k_customs:'td_live_xxxxxxxx',k_apollo:'apollo_xxxxxxxx',k_maps:'AIzaSyxxxxxxxxxxxx',k_linkedin:'tina@sunrise-led-demo.com',k_verify:'zb_xxxxxxxx',k_wa:'EAAGxxxxxxxx',k_site:'www.sunrise-led-demo.com（Cloudflare Pages）',gscProp:'https://www.sunrise-led-demo.com/',gscAuth:'点击授权后自动写入',kwPlanner:'dev-token-xxxxxxxx',semrush:'sem_xxxxxxxx',psi:'AIzaSyxxxxxxxxxxxx',seoLangs:'English, 德语, 西班牙语'};
+function renderSet(){const S=G('settings')||{};$('#setBox').innerHTML=SETF.map(([t,fs])=>`<h3>${t} <span class="nc">未接入</span></h3><div class="grid" style="margin-bottom:14px">${fs.map(([k,l,ty,o])=>`<label>${l}${ty==='select'?`<select data-s="${k}">${o.map(x=>`<option ${S[k]===x?'selected':''}>${x}</option>`).join('')}</select>`:`<input data-s="${k}" type="${ty||'text'}" value="${esc(S[k]||'')}" placeholder="${esc(SEX[k]?'例：'+SEX[k]:'未配置')}"><div class="exh">示例：${esc(SEX[k]||'-')}</div>`}</label>`).join('')}</div>`).join('')}
+function saveSet(){const S={};$$('[data-s]').forEach(e=>S[e.dataset.s]=e.value);GS('settings',S);toast('设置已保存（未连接任何服务）')}
+renderWS();renderStratLib();renderReplies();renderForm();if(!personas.length&&WS.cur==='demo')genPersonas();else renderPersonas();if(!leads.length&&WS.cur==='demo')genLeads();else{renderLeads();fillMailLeads()}renderKB();show(0);
+</script></body></html>
